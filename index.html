@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Celestial Journey For My Love ✨</title>
-    <!-- Three.js for 3D Cosmic Graphics -->
+    <title>Happy Birthday, My Queen! ❤️</title>
+    <!-- Three.js for Particle Graphics -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #ff2a6d;
-            --secondary: #05d5ff;
-            --accent: #ffb703;
-            --bg-dark: #030008;
-            --glass: rgba(255, 255, 255, 0.04);
-            --border-glow: rgba(255, 42, 109, 0.3);
+            --primary-gold: #dfac6c;
+            --rose-gold: #e8a598;
+            --bg-dark: #0b0709;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(223, 172, 108, 0.25);
+            --text-light: #f3f3f3;
         }
 
         * {
@@ -29,15 +29,16 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: var(--bg-dark);
-            color: #ffffff;
+            color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            line-height: 1.6;
         }
 
-        /* 3D WebGL Cosmic Background */
+        /* Ambient Canvas */
         #webgl-canvas {
             position: fixed;
             top: 0;
@@ -51,26 +52,26 @@
         /* Floating Audio Control */
         .music-player {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 25px;
+            right: 25px;
             z-index: 100;
-            background: rgba(10, 0, 18, 0.7);
-            border: 1px solid var(--border-glow);
-            padding: 10px 20px;
+            background: rgba(15, 10, 12, 0.8);
+            border: 1px solid var(--glass-border);
+            padding: 10px 22px;
             border-radius: 40px;
             backdrop-filter: blur(15px);
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             transition: all 0.3s ease;
         }
 
         .music-player:hover {
             transform: scale(1.05);
-            border-color: var(--primary);
-            box-shadow: 0 0 25px rgba(255, 42, 109, 0.5);
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 20px rgba(223, 172, 108, 0.4);
         }
 
         /* Lock Screen Entrance */
@@ -80,7 +81,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(3, 0, 8, 0.96);
+            background: rgba(11, 7, 9, 0.97);
             backdrop-filter: blur(25px);
             z-index: 999;
             display: flex;
@@ -96,21 +97,22 @@
         }
 
         .lock-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-glow);
-            padding: 45px 35px;
-            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            padding: 50px 40px;
+            border-radius: 24px;
             text-align: center;
-            max-width: 380px;
+            max-width: 400px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
 
         .lock-card h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
-            color: var(--accent);
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary-gold);
             letter-spacing: 2px;
+            margin-bottom: 10px;
         }
 
         .passcode-input {
@@ -120,326 +122,389 @@
             text-align: center;
             letter-spacing: 12px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--primary);
+            border: 1px solid var(--primary-gold);
             color: white;
-            border-radius: 14px;
+            border-radius: 12px;
             margin: 25px 0;
             outline: none;
             transition: all 0.3s ease;
         }
 
         .passcode-input:focus {
-            box-shadow: 0 0 25px rgba(255, 42, 109, 0.5);
+            box-shadow: 0 0 25px rgba(223, 172, 108, 0.5);
         }
 
-        /* Container & Sections */
+        /* Main Container */
         .container {
-            max-width: 850px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 60px 20px;
+            padding: 80px 20px;
             text-align: center;
             position: relative;
             z-index: 1;
         }
 
-        .chapter {
-            margin-bottom: 120px;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s ease;
-        }
-
-        .chapter.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .chapter-tag {
-            font-family: 'Cinzel', serif;
-            color: var(--secondary);
-            letter-spacing: 3px;
-            font-size: 0.9rem;
+        .section-tag {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--rose-gold);
+            letter-spacing: 4px;
+            font-size: 0.85rem;
             text-transform: uppercase;
             margin-bottom: 10px;
         }
 
         h1.title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4.5rem;
-            background: linear-gradient(45deg, #ff2a6d, #05d5ff, #ffb703);
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            background: linear-gradient(45deg, var(--rose-gold), var(--primary-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 15px;
-            text-shadow: 0 0 30px rgba(255, 42, 109, 0.3);
         }
 
-        /* Constellation Memory Nodes */
-        .constellation-grid {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-            margin-top: 40px;
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary-gold);
+            margin-bottom: 40px;
         }
 
-        .star-node {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
+        /* Photo Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 50px 0 100px;
+        }
+
+        .polaroid-card {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--secondary);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
+            border: 1px solid var(--glass-border);
+            padding: 18px 18px 30px 18px;
+            border-radius: 16px;
             backdrop-filter: blur(10px);
             transition: all 0.4s ease;
-            box-shadow: 0 0 15px rgba(5, 213, 255, 0.2);
-            position: relative;
+            cursor: pointer;
         }
 
-        .star-node:hover {
-            transform: scale(1.15) rotate(5deg);
-            border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(255, 42, 109, 0.5);
+        .polaroid-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 20px 40px rgba(223, 172, 108, 0.2);
         }
 
-        .star-node span {
-            font-size: 1.8rem;
+        .polaroid-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 10px;
         }
 
-        .star-node label {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.8);
-            margin-top: 5px;
-            font-weight: 600;
+        .polaroid-card caption {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--rose-gold);
+            margin-top: 15px;
+            font-style: italic;
         }
 
-        .node-reveal {
-            margin-top: 30px;
-            background: var(--glass);
-            border: 1px solid var(--border-glow);
-            padding: 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            display: none;
-            animation: fadeIn 0.5s ease;
+        /* Interactive Promise Cards (Flip) */
+        .promises-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 50px 0 100px;
         }
 
-        /* Swipable Card Deck Section */
-        .deck-container {
-            position: relative;
-            width: 300px;
-            height: 220px;
-            margin: 40px auto 20px;
+        .promise-card-container {
             perspective: 1000px;
+            height: 220px;
+            cursor: pointer;
         }
 
-        .card-deck {
+        .promise-card {
             width: 100%;
             height: 100%;
             position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .reason-card {
+        .promise-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(255, 42, 109, 0.15), rgba(5, 213, 255, 0.15));
-            border: 1px solid var(--border-glow);
-            border-radius: 20px;
-            padding: 25px;
-            backdrop-filter: blur(15px);
+            backface-visibility: hidden;
+            border-radius: 18px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            transition: all 0.5s ease;
-            cursor: pointer;
+            padding: 25px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
         }
 
-        /* Make A Wish Hold Orb */
-        .wish-orb-container {
-            margin-top: 40px;
+        .card-front h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-gold);
+            font-size: 1.6rem;
         }
 
-        .wish-orb {
-            width: 120px;
-            height: 120px;
+        .card-back {
+            transform: rotateY(180deg);
+            border-color: var(--rose-gold);
+        }
+
+        .card-back p {
+            font-size: 0.95rem;
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        /* Timeline Section */
+        .timeline-container {
+            position: relative;
+            max-width: 700px;
+            margin: 50px auto 100px;
+            padding-left: 30px;
+            border-left: 2px solid var(--glass-border);
+            text-align: left;
+        }
+
+        .timeline-event {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-event::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ff2a6d, #030008);
-            border: 2px solid var(--accent);
-            margin: 0 auto;
+            background: var(--primary-gold);
+            box-shadow: 0 0 10px var(--primary-gold);
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--rose-gold);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--primary-gold);
+            margin-bottom: 8px;
+        }
+
+        /* Wish Crystal Orb */
+        .orb-section {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 60px 20px;
+            border-radius: 28px;
+            margin: 60px 0;
+            backdrop-filter: blur(15px);
+        }
+
+        .crystal-orb {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--rose-gold), var(--bg-dark));
+            border: 2px solid var(--primary-gold);
+            margin: 30px auto;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 183, 3, 0.4);
+            box-shadow: 0 0 30px rgba(223, 172, 108, 0.3);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             transition: all 0.3s ease;
         }
 
-        .wish-orb:active {
+        .crystal-orb:active {
             transform: scale(0.92);
-            box-shadow: 0 0 60px rgba(255, 183, 3, 0.9);
+            box-shadow: 0 0 60px rgba(223, 172, 108, 0.8);
         }
 
-        /* Buttons */
+        /* Button Styling */
         .btn {
-            background: linear-gradient(45deg, var(--primary), #d60047);
-            color: white;
+            background: linear-gradient(45deg, var(--primary-gold), var(--rose-gold));
+            color: #111;
             border: none;
             padding: 16px 36px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             border-radius: 40px;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 42, 109, 0.4);
+            box-shadow: 0 10px 30px rgba(223, 172, 108, 0.3);
             transition: all 0.3s ease;
             letter-spacing: 1px;
         }
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255, 42, 109, 0.6);
+            box-shadow: 0 15px 35px rgba(223, 172, 108, 0.5);
         }
 
         .hint {
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255,255,255,0.5);
             margin-top: 10px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body onclick="spawnSparkle(event)">
 
-    <!-- 3D WebGL Canvas -->
+    <!-- 3D Particle Background -->
     <canvas id="webgl-canvas"></canvas>
 
     <!-- Floating Audio Control -->
     <div class="music-player" onclick="toggleMusic(event)">
         <span id="music-icon">🎵</span>
-        <span id="music-text" style="font-size: 0.85rem;">Play Romantic Song</span>
+        <span id="music-text" style="font-size: 0.85rem;">Play Background Music</span>
     </div>
 
-    <!-- Lock Screen Entrance -->
+    <!-- Passcode Entrance Lock -->
     <div id="lock-screen">
         <div class="lock-card">
-            <h2>Private Vault 🔐</h2>
-            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 5px;">Enter our special 4-digit date code</p>
+            <h2>Private Access 🔐</h2>
+            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 5px;">Enter our special passcode to unlock</p>
             <input type="password" id="passcode" class="passcode-input" maxlength="4" placeholder="••••">
-            <button class="btn" onclick="unlockStory(event)">Begin The Journey ✨</button>
-            <p id="error-msg" style="color: var(--primary); font-size: 0.85rem; margin-top: 15px; display: none;">Wrong passcode! Try again ❤️</p>
+            <button class="btn" onclick="unlockExperience(event)">Enter Experience ✨</button>
+            <p id="error-msg" style="color: var(--rose-gold); font-size: 0.85rem; margin-top: 15px; display: none;">Incorrect passcode! Try again ❤️</p>
         </div>
     </div>
 
     <!-- Main Container -->
     <div class="container">
+        <!-- Header -->
+        <div class="section-tag">An Interactive Birthday Celebration</div>
+        <h1 class="title">Happy Birthday, My Beloved Wife ❤️</h1>
+        <p style="color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto 80px;">
+            To the woman who fills every moment with warmth, grace, and light. Here is a small reflection of my love for you.
+        </p>
 
-        <!-- Chapter 1: Introduction -->
-        <div class="chapter visible" id="chap1">
-            <div class="chapter-tag">Chapter I • The Beginning</div>
-            <h1 class="title">Happy Birthday, My Queen! ✨</h1>
-            <p style="font-size: 1.1rem; color: rgba(255,255,255,0.8); line-height: 1.8;">
-                Welcome to a universe created exclusively for you. Scroll down to unlock your birthday story...
-            </p>
-        </div>
-
-        <!-- Chapter 2: The Constellation of Secrets -->
-        <div class="chapter" id="chap2">
-            <div class="chapter-tag">Chapter II • The Constellation of Secrets</div>
-            <h2 style="font-family: 'Cinzel', serif; font-size: 2rem; color: var(--accent);">Tap The Glowing Stars 🌟</h2>
-            <p class="hint">Each star holds a hidden memory or message for you.</p>
-
-            <div class="constellation-grid">
-                <div class="star-node" onclick="revealNode(event, 'node1')">
-                    <span>💫</span>
-                    <label>Memory #1</label>
-                </div>
-                <div class="star-node" onclick="revealNode(event, 'node2')">
-                    <span>✨</span>
-                    <label>Secret Wish</label>
-                </div>
-                <div class="star-node" onclick="revealNode(event, 'node3')">
-                    <span>💖</span>
-                    <label>My Promise</label>
-                </div>
+        <!-- Gallery Section -->
+        <div class="section-tag">Precious Memories</div>
+        <h2 class="section-title">Our Captured Moments 📸</h2>
+        <div class="gallery-grid">
+            <div class="polaroid-card">
+                <!-- Replace src with your direct photo URLs -->
+                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600" alt="Memory 1">
+                <caption>Forever & Always</caption>
             </div>
-
-            <!-- Secret Box Displays -->
-            <div class="node-reveal" id="node1">
-                <h3 style="color: var(--secondary); font-family: 'Cinzel', serif; margin-bottom: 10px;">The Day Everything Changed</h3>
-                <p style="line-height: 1.6; color: #ddd;">From the moment you entered my life, every day became softer, happier, and filled with endless meaning. You are my best decision. ❤️</p>
+            <div class="polaroid-card">
+                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600" alt="Memory 2">
+                <caption>Your Beautiful Smile</caption>
             </div>
-            <div class="node-reveal" id="node2">
-                <h3 style="color: var(--secondary); font-family: 'Cinzel', serif; margin-bottom: 10px;">My Wish For You Today</h3>
-                <p style="line-height: 1.6; color: #ddd;">May this year bring you all the warmth, joy, peace, and boundless success you bring into my world every day.</p>
-            </div>
-            <div class="node-reveal" id="node3">
-                <h3 style="color: var(--secondary); font-family: 'Cinzel', serif; margin-bottom: 10px;">Forever Promise</h3>
-                <p style="line-height: 1.6; color: #ddd;">I promise to stand beside you, support your wildest dreams, make you laugh when you're tired, and love you endlessly.</p>
+            <div class="polaroid-card">
+                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=600" alt="Memory 3">
+                <caption>Every Little Adventure</caption>
             </div>
         </div>
 
-        <!-- Chapter 3: Reasons Why I Love You -->
-        <div class="chapter" id="chap3">
-            <div class="chapter-tag">Chapter III • Infinite Love</div>
-            <h2 style="font-family: 'Cinzel', serif; font-size: 2rem; color: var(--accent);">Why You're One In A Million 💌</h2>
-            <p class="hint">Tap the card stack to flip through the reasons!</p>
-
-            <div class="deck-container" onclick="nextCard(event)">
-                <div class="card-deck" id="cardDeck">
-                    <div class="reason-card" style="z-index: 3;">
-                        <h3 style="font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: var(--secondary);">#1 Your Smile</h3>
-                        <p style="font-size: 0.95rem; margin-top: 10px;">How it brightens up even my most chaotic days in an instant.</p>
+        <!-- Promises Section -->
+        <div class="section-tag">Heartfelt Commitments</div>
+        <h2 class="section-title">My Promises To You 💌</h2>
+        <p class="hint">Click each card to flip and reveal my promise</p>
+        
+        <div class="promises-grid">
+            <div class="promise-card-container" onclick="flipCard(this)">
+                <div class="promise-card">
+                    <div class="card-front">
+                        <h3>Promise #1 ✦</h3>
+                        <p class="hint">Click to flip</p>
                     </div>
-                    <div class="reason-card" style="z-index: 2;">
-                        <h3 style="font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: var(--primary);">#2 Your Kind Heart</h3>
-                        <p style="font-size: 0.95rem; margin-top: 10px;">The unconditional warmth and care you show to everyone around you.</p>
+                    <div class="card-back">
+                        <p>"To always listen, hold your hand through life's highs and lows, and stand firmly by your side through every season."</p>
                     </div>
-                    <div class="reason-card" style="z-index: 1;">
-                        <h3 style="font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: var(--accent);">#3 My Favorite Partner</h3>
-                        <p style="font-size: 0.95rem; margin-top: 10px;">You are my rock, my best friend, and my favorite adventure forever.</p>
+                </div>
+            </div>
+            <div class="promise-card-container" onclick="flipCard(this)">
+                <div class="promise-card">
+                    <div class="card-front">
+                        <h3>Promise #2 ✦</h3>
+                        <p class="hint">Click to flip</p>
+                    </div>
+                    <div class="card-back">
+                        <p>"To support every single dream you hold, celebrate your victories, and encourage your personal growth every day."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="promise-card-container" onclick="flipCard(this)">
+                <div class="promise-card">
+                    <div class="card-front">
+                        <h3>Promise #3 ✦</h3>
+                        <p class="hint">Click to flip</p>
+                    </div>
+                    <div class="card-back">
+                        <p>"To bring joy, warmth, and laughter into our home, and love you deeper with each passing year."</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Chapter 4: Grand Birthday Finale -->
-        <div class="chapter" id="chap4">
-            <div class="chapter-tag">Chapter IV • The Birthday Wish</div>
-            <h2 style="font-family: 'Cinzel', serif; font-size: 2.2rem; color: var(--accent);">Charge The Cosmic Crystal 🔮</h2>
-            <p class="hint">Press and hold the crystal ball below to make your birthday wish!</p>
-
-            <div class="wish-orb-container">
-                <div class="wish-orb" id="wishOrb" onmousedown="holdWish()" onmouseup="releaseWish()" ontouchstart="holdWish()" ontouchend="releaseWish()">
-                    ✨
-                </div>
+        <!-- Timeline Section -->
+        <div class="section-tag">Our Path Together</div>
+        <h2 class="section-title">Chapters of Our Story ⏳</h2>
+        
+        <div class="timeline-container">
+            <div class="timeline-event">
+                <div class="timeline-date">CHAPTER I</div>
+                <div class="timeline-title">The Day We Met</div>
+                <p style="color: #bbb; font-size: 0.95rem;">The quiet moment that started the rest of our lives together.</p>
+            </div>
+            <div class="timeline-event">
+                <div class="timeline-date">CHAPTER II</div>
+                <div class="timeline-title">Starting Our Journey</div>
+                <p style="color: #bbb; font-size: 0.95rem;">Taking step by step towards building a life filled with mutual trust and happiness.</p>
+            </div>
+            <div class="timeline-event">
+                <div class="timeline-date">CHAPTER III</div>
+                <div class="timeline-title">Today & Forever</div>
+                <p style="color: #bbb; font-size: 0.95rem;">Celebrating another milestone birthday with endless gratitude for having you in my life.</p>
             </div>
         </div>
 
+        <!-- Birthday Wish Finale -->
+        <div class="orb-section">
+            <div class="section-tag">Make A Wish</div>
+            <h2 class="section-title" style="margin-bottom: 10px;">The Birthday Crystal 🔮</h2>
+            <p class="hint">Press and hold the orb below to make your birthday wish!</p>
+
+            <div class="crystal-orb" onmousedown="holdWish()" onmouseup="releaseWish()" ontouchstart="holdWish()" ontouchend="releaseWish()">
+                ✨
+            </div>
+        </div>
     </div>
 
-    <!-- Audio Player -->
+    <!-- Background Audio -->
     <audio id="bg-music" loop>
         <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3" type="audio/mpeg">
     </audio>
 
     <script>
         // CONFIGURATION
-        const SECRET_PASSCODE = "1234"; // 👈 Set your 4-digit secret passcode
+        const SECRET_PASSCODE = "1234"; // Set your 4-digit secret passcode
 
         let isPlaying = false;
         const bgMusic = document.getElementById('bg-music');
 
-        function unlockStory(e) {
+        function unlockExperience(e) {
             e.stopPropagation();
             const input = document.getElementById('passcode').value;
             const errorMsg = document.getElementById('error-msg');
@@ -447,8 +512,7 @@
             if (input === SECRET_PASSCODE) {
                 document.getElementById('lock-screen').classList.add('hidden');
                 toggleMusic();
-                triggerSupernova();
-                initScrollObserver();
+                triggerConfetti();
             } else {
                 errorMsg.style.display = 'block';
             }
@@ -459,50 +523,29 @@
             if (isPlaying) {
                 bgMusic.pause();
                 document.getElementById('music-icon').innerText = '🎵';
-                document.getElementById('music-text').innerText = 'Play Song';
+                document.getElementById('music-text').innerText = 'Play Music';
                 isPlaying = false;
             } else {
                 bgMusic.play().then(() => {
                     document.getElementById('music-icon').innerText = '🎶';
-                    document.getElementById('music-text').innerText = 'Pause Song';
+                    document.getElementById('music-text').innerText = 'Pause Music';
                     isPlaying = true;
                 }).catch(() => console.log('Audio playback blocked'));
             }
         }
 
-        // Reveal Constellation Memory Nodes
-        function revealNode(e, nodeId) {
-            e.stopPropagation();
-            document.querySelectorAll('.node-reveal').forEach(el => el.style.display = 'none');
-            const target = document.getElementById(nodeId);
-            target.style.display = 'block';
-            triggerSupernova();
+        // Card Flip Interactive Function
+        function flipCard(container) {
+            const card = container.querySelector('.promise-card');
+            card.classList.toggle('flipped');
         }
 
-        // Swipable Card Deck Logic
-        function nextCard(e) {
-            e.stopPropagation();
-            const deck = document.getElementById('cardDeck');
-            const cards = deck.querySelectorAll('.reason-card');
-            if (cards.length > 0) {
-                const topCard = cards[cards.length - 1];
-                topCard.style.transform = 'translateY(-120%) rotate(15deg)';
-                topCard.style.opacity = '0';
-                
-                setTimeout(() => {
-                    deck.insertBefore(topCard, deck.firstChild);
-                    topCard.style.transform = 'none';
-                    topCard.style.opacity = '1';
-                }, 400);
-            }
-        }
-
-        // Hold Crystal Orb Wish Trigger
+        // Hold-to-Wish Action
         let holdTimer;
         function holdWish() {
             holdTimer = setTimeout(() => {
-                triggerSupernova();
-                alert("✨ Your Birthday Wish Has Been Sent To The Stars! Happy Birthday, My Love! ❤️");
+                triggerConfetti();
+                alert("✨ May all your deepest birthday wishes come true! Happy Birthday, My Love! ❤️");
             }, 1200);
         }
 
@@ -510,37 +553,24 @@
             clearTimeout(holdTimer);
         }
 
-        // Confetti Fireworks Explosion
-        function triggerSupernova() {
+        // Confetti Burst Effect
+        function triggerConfetti() {
             confetti({
-                particleCount: 120,
-                spread: 100,
+                particleCount: 100,
+                spread: 90,
                 origin: { y: 0.6 },
-                colors: ['#ff2a6d', '#05d5ff', '#ffb703', '#ffffff']
+                colors: ['#dfac6c', '#e8a598', '#ffffff']
             });
         }
 
-        // Scroll Reveal Chapters
-        function initScrollObserver() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.2 });
-
-            document.querySelectorAll('.chapter').forEach(chap => observer.observe(chap));
-        }
-
-        // Click/Touch Sparkle Effect
+        // Sparkle Effect on Click
         function spawnSparkle(e) {
             const spark = document.createElement('div');
             spark.innerHTML = '✨';
             spark.style.position = 'fixed';
             spark.style.left = e.clientX + 'px';
             spark.style.top = e.clientY + 'px';
-            spark.style.fontSize = Math.random() * 20 + 15 + 'px';
+            spark.style.fontSize = '18px';
             spark.style.pointerEvents = 'none';
             spark.style.zIndex = '9999';
             spark.style.transition = 'transform 1s ease, opacity 1s ease';
@@ -550,14 +580,14 @@
             document.body.appendChild(spark);
 
             setTimeout(() => {
-                spark.style.transform = `translate(-50%, -100px) scale(1.5)`;
+                spark.style.transform = `translate(-50%, -80px) scale(1.4)`;
                 spark.style.opacity = '0';
             }, 50);
 
             setTimeout(() => spark.remove(), 1000);
         }
 
-        // THREE.JS 3D COSMIC NEBULA BACKGROUND
+        // THREE.JS Ambient Particle Background
         const canvas = document.getElementById('webgl-canvas');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -567,7 +597,7 @@
         renderer.setPixelRatio(window.devicePixelRatio);
 
         const geometry = new THREE.BufferGeometry();
-        const count = 3000;
+        const count = 2000;
         const positions = new Float32Array(count * 3);
 
         for (let i = 0; i < count * 3; i++) {
@@ -577,10 +607,10 @@
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
         const material = new THREE.PointsMaterial({
-            color: 0x05d5ff,
-            size: 0.04,
+            color: 0xdfac6c,
+            size: 0.03,
             transparent: true,
-            opacity: 0.7,
+            opacity: 0.6,
             blending: THREE.AdditiveBlending
         });
 
@@ -591,8 +621,8 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            particles.rotation.y += 0.002;
-            particles.rotation.x += 0.001;
+            particles.rotation.y += 0.0015;
+            particles.rotation.x += 0.0008;
             renderer.render(scene, camera);
         }
         animate();
