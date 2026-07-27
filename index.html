@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, My Queen! 🪔✨</title>
-    <!-- Three.js for Particle Effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Canvas Confetti -->
+    <title>Happy Birthday, My Queen! 🎂🎈</title>
+    <!-- Canvas Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Rozha+One&family=Yatra+One&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&family=Sacramento&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --royal-red: #4a040d;
-            --deep-maroon: #2b0207;
-            --gold-primary: #f39c12;
-            --gold-shine: #f1c40f;
-            --rose-accent: #e74c3c;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --gold-border: rgba(243, 156, 18, 0.35);
-            --text-light: #fff5ea;
+            --primary-pink: #ff477e;
+            --accent-purple: #7209b7;
+            --accent-yellow: #ffb703;
+            --mint-green: #06d6a0;
+            --bg-gradient: linear-gradient(135deg, #ffedfa 0%, #e0f2fe 50%, #fff3d6 100%);
+            --glass-card: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --shadow: 0 15px 35px rgba(255, 71, 126, 0.15);
+            --text-dark: #2b2d42;
         }
 
         * {
@@ -32,36 +31,45 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--deep-maroon);
-            background-image: 
-                radial-gradient(circle at 50% 20%, rgba(243, 156, 18, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(231, 76, 60, 0.1) 0%, transparent 40%);
-            color: var(--text-light);
+            background: var(--bg-gradient);
+            color: var(--text-dark);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-            line-height: 1.6;
         }
 
-        /* Ambient Canvas */
-        #webgl-canvas {
+        /* Floating Vector Balloons Canvas Background */
+        .balloon-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: 0;
             pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
         }
 
-        /* Floating Audio Player */
+        .floating-balloon {
+            position: absolute;
+            bottom: -120px;
+            animation: floatUp 12s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+        }
+
+        /* Floating Audio Control */
         .music-player {
             position: fixed;
-            top: 25px;
-            right: 25px;
+            top: 20px;
+            right: 20px;
             z-index: 100;
-            background: rgba(43, 2, 7, 0.85);
-            border: 1px solid var(--gold-border);
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid white;
             padding: 10px 22px;
             border-radius: 40px;
             backdrop-filter: blur(15px);
@@ -69,25 +77,26 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
+            font-weight: 600;
+            color: var(--primary-pink);
         }
 
         .music-player:hover {
             transform: scale(1.05);
-            border-color: var(--gold-shine);
-            box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+            box-shadow: 0 15px 30px rgba(255, 47, 126, 0.25);
         }
 
-        /* Lock Screen Entrance */
+        /* Lock Screen Overlay */
         #lock-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(20, 1, 4, 0.97);
-            backdrop-filter: blur(25px);
+            background: rgba(255, 237, 250, 0.95);
+            backdrop-filter: blur(20px);
             z-index: 999;
             display: flex;
             justify-content: center;
@@ -102,22 +111,21 @@
         }
 
         .lock-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--gold-border);
-            padding: 50px 35px;
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid white;
+            padding: 45px 35px;
+            border-radius: 32px;
             text-align: center;
             max-width: 400px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            box-shadow: var(--shadow);
         }
 
         .lock-card h2 {
-            font-family: 'Rozha One', serif;
-            font-size: 2.2rem;
-            color: var(--gold-shine);
-            letter-spacing: 1px;
-            margin-bottom: 10px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: var(--primary-pink);
+            margin-bottom: 8px;
         }
 
         .passcode-input {
@@ -126,162 +134,177 @@
             font-size: 1.5rem;
             text-align: center;
             letter-spacing: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--gold-primary);
-            color: white;
-            border-radius: 12px;
+            background: rgba(255, 237, 250, 0.6);
+            border: 2px solid var(--primary-pink);
+            color: var(--text-dark);
+            border-radius: 18px;
             margin: 25px 0;
             outline: none;
-            transition: all 0.3s ease;
+            font-weight: 700;
         }
 
-        .passcode-input:focus {
-            box-shadow: 0 0 25px rgba(243, 156, 18, 0.5);
-        }
-
-        /* Container & Titles */
+        /* Main Container */
         .container {
-            max-width: 1000px;
+            max-width: 950px;
             margin: 0 auto;
-            padding: 80px 20px;
+            padding: 60px 20px;
             text-align: center;
             position: relative;
             z-index: 1;
         }
 
-        .section-tag {
-            font-family: 'Cinzel', serif;
-            color: var(--gold-primary);
-            letter-spacing: 4px;
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 71, 126, 0.15);
+            color: var(--primary-pink);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 700;
             font-size: 0.85rem;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
         }
 
         h1.title {
-            font-family: 'Rozha One', serif;
+            font-family: 'Fredoka', sans-serif;
             font-size: 3.8rem;
-            background: linear-gradient(45deg, var(--gold-shine), #ffffff, var(--gold-primary));
+            background: linear-gradient(45deg, var(--primary-pink), var(--accent-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-            text-shadow: 0 0 30px rgba(243, 156, 18, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .handwritten {
+            font-family: 'Sacramento', cursive;
+            font-size: 2.5rem;
+            color: var(--accent-purple);
         }
 
         .section-title {
-            font-family: 'Rozha One', serif;
-            font-size: 2.5rem;
-            color: var(--gold-shine);
-            margin-bottom: 40px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.3rem;
+            color: var(--text-dark);
+            margin-bottom: 35px;
         }
 
-        /* Interactive Diya Section */
-        .diya-grid {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin: 40px 0 90px;
+        /* Interactive Cake Section (Vector SVG) */
+        .cake-card {
+            background: var(--glass-card);
+            border: 2px solid var(--glass-border);
+            padding: 40px 20px;
+            border-radius: 32px;
+            box-shadow: var(--shadow);
+            margin: 40px 0 80px;
+            backdrop-filter: blur(10px);
         }
 
-        .diya-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--gold-border);
-            padding: 30px 20px;
-            border-radius: 20px;
-            width: 260px;
+        .cake-svg-container {
+            width: 220px;
+            margin: 0 auto;
             cursor: pointer;
-            backdrop-filter: blur(12px);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .cake-svg-container:hover {
+            transform: scale(1.05);
+        }
+
+        .flame {
+            animation: flicker 0.6s infinite alternate;
+            transform-origin: center bottom;
+            cursor: pointer;
+        }
+
+        .flame.off {
+            display: none;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.15) rotate(2deg); }
+        }
+
+        /* Interactive Present Box Section */
+        .gift-section {
+            margin: 80px 0;
+        }
+
+        .gift-box-svg {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gift-box-svg:hover {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .letter-popup {
+            display: none;
+            background: white;
+            border-radius: 28px;
+            padding: 35px;
+            max-width: 600px;
+            margin: 30px auto 0;
+            box-shadow: var(--shadow);
+            border: 2px solid #ffccd5;
+            animation: popIn 0.5s ease forwards;
+            text-align: left;
+        }
+
+        /* Vector Photo Gallery Wall */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            margin: 40px 0 80px;
+        }
+
+        .polaroid-frame {
+            background: white;
+            padding: 15px 15px 25px 15px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
             transition: all 0.4s ease;
             position: relative;
         }
 
-        .diya-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--gold-shine);
-            box-shadow: 0 15px 35px rgba(243, 156, 18, 0.25);
+        .polaroid-frame:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 0 20px 40px rgba(255, 47, 126, 0.2);
         }
 
-        .diya-icon {
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 10px rgba(241, 196, 15, 0.5));
-        }
-
-        .diya-title {
-            font-family: 'Cinzel', serif;
-            color: var(--gold-shine);
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-
-        .diya-text {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.85);
-            display: none;
-            margin-top: 10px;
-            line-height: 1.5;
-        }
-
-        .diya-card.lit .diya-text {
-            display: block;
-        }
-
-        .diya-card.lit .diya-hint {
-            display: none;
-        }
-
-        /* Photo Gallery Section */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin: 40px 0 90px;
-        }
-
-        .photo-frame {
-            background: var(--glass-bg);
-            border: 2px solid var(--gold-border);
-            padding: 15px 15px 25px 15px;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            transition: all 0.4s ease;
-        }
-
-        .photo-frame:hover {
-            transform: translateY(-8px);
-            border-color: var(--gold-shine);
-            box-shadow: 0 20px 40px rgba(243, 156, 18, 0.2);
-        }
-
-        .photo-frame img {
+        .polaroid-frame img {
             width: 100%;
-            height: 280px;
+            height: 250px;
             object-fit: cover;
-            border-radius: 10px;
-            border: 1px solid rgba(243, 156, 18, 0.2);
+            border-radius: 12px;
         }
 
-        .photo-frame caption {
+        .polaroid-frame caption {
             display: block;
-            font-family: 'Rozha One', serif;
-            font-size: 1.3rem;
-            color: var(--gold-shine);
-            margin-top: 15px;
+            font-family: 'Sacramento', cursive;
+            font-size: 1.8rem;
+            color: var(--primary-pink);
+            margin-top: 12px;
+            font-weight: bold;
         }
 
-        /* Flip Promise Cards Section */
+        /* Interactive Promise Badges (Cards) */
         .promises-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin: 40px 0 90px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            margin: 40px 0 80px;
         }
 
         .promise-card-container {
             perspective: 1000px;
-            height: 220px;
+            height: 200px;
             cursor: pointer;
         }
 
@@ -302,219 +325,223 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 18px;
+            border-radius: 24px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 25px;
-            background: var(--glass-bg);
-            border: 1px solid var(--gold-border);
-            backdrop-filter: blur(15px);
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            border: 2px solid #ffccd5;
         }
 
         .card-front h3 {
-            font-family: 'Rozha One', serif;
-            color: var(--gold-shine);
-            font-size: 1.6rem;
+            font-family: 'Fredoka', sans-serif;
+            color: var(--primary-pink);
+            font-size: 1.4rem;
+            margin-top: 10px;
         }
 
         .card-back {
             transform: rotateY(180deg);
-            border-color: var(--gold-shine);
+            background: linear-gradient(135deg, #ff477e, #7209b7);
+            color: white;
+            border: none;
         }
 
         .card-back p {
             font-size: 0.95rem;
-            color: #ffeedd;
             line-height: 1.6;
         }
 
-        /* Wishing Thali Orb */
-        .thali-section {
-            background: var(--glass-bg);
-            border: 1px solid var(--gold-border);
-            padding: 60px 20px;
-            border-radius: 28px;
-            margin: 60px 0;
-            backdrop-filter: blur(15px);
-        }
-
-        .thali-orb {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, var(--gold-shine), var(--deep-maroon));
-            border: 2px solid var(--gold-primary);
-            margin: 30px auto;
-            cursor: pointer;
-            box-shadow: 0 0 35px rgba(243, 156, 18, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .thali-orb:active {
-            transform: scale(0.92);
-            box-shadow: 0 0 70px rgba(243, 156, 18, 0.9);
-        }
-
-        /* Buttons */
+        /* General Button */
         .btn {
-            background: linear-gradient(45deg, var(--gold-primary), var(--gold-shine));
-            color: #2b0207;
+            background: linear-gradient(45deg, var(--primary-pink), var(--accent-purple));
+            color: white;
             border: none;
             padding: 16px 38px;
             font-size: 1rem;
-            font-weight: 700;
+            font-family: 'Fredoka', sans-serif;
             border-radius: 40px;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(243, 156, 18, 0.35);
+            box-shadow: 0 10px 25px rgba(255, 47, 126, 0.3);
             transition: all 0.3s ease;
-            letter-spacing: 1px;
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(243, 156, 18, 0.6);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 47, 126, 0.5);
         }
 
         .hint {
             font-size: 0.85rem;
-            color: rgba(255,255,255,0.5);
-            margin-top: 10px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
     </style>
 </head>
-<body onclick="spawnSparkle(event)">
+<body>
 
-    <!-- Ambient Sparkle Canvas -->
-    <canvas id="webgl-canvas"></canvas>
+    <!-- Floating Vector Balloons Background -->
+    <div class="balloon-container" id="balloonContainer"></div>
 
     <!-- Floating Audio Control -->
     <div class="music-player" onclick="toggleMusic(event)">
         <span id="music-icon">🎵</span>
-        <span id="music-text" style="font-size: 0.85rem;">Play Background Track</span>
+        <span id="music-text">Play Birthday Song</span>
     </div>
 
     <!-- Entrance Passcode Gate -->
     <div id="lock-screen">
         <div class="lock-card">
-            <h2>Shubh Aagaman 🌺</h2>
-            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 5px;">Enter our special 4-digit secret code</p>
+            <h2>Special Surprise 🎁</h2>
+            <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Enter our 4-digit secret passcode!</p>
             <input type="password" id="passcode" class="passcode-input" maxlength="4" placeholder="••••">
-            <button class="btn" onclick="unlockExperience(event)">Unlock Celebration ✨</button>
-            <p id="error-msg" style="color: var(--rose-accent); font-size: 0.85rem; margin-top: 15px; display: none;">Incorrect passcode! Try again ❤️</p>
+            <button class="btn" onclick="unlockExperience(event)">Unlock Celebration 🎉</button>
+            <p id="error-msg" style="color: var(--primary-pink); font-size: 0.85rem; margin-top: 15px; display: none;">Wrong code! Try again ❤️</p>
         </div>
     </div>
 
-    <!-- Main Webpage Content -->
+    <!-- Main Content Container -->
     <div class="container">
         
         <!-- Header -->
-        <div class="section-tag">A Royal Celebration</div>
-        <h1 class="title">Happy Birthday, My Queen! 🌺</h1>
-        <p style="color: rgba(255,255,255,0.8); max-width: 650px; margin: 0 auto 70px; line-height: 1.8;">
-            To my beloved wife, who brings warmth, grace, and eternal light into our lives. May your day be as magnificent as you are.
-        </p>
+        <div class="badge-tag">Today Is All About You</div>
+        <h1 class="title">Happy Birthday, My Queen! 👑</h1>
+        <p class="handwritten">To my wonderful wife, best friend & favorite person...</p>
 
-        <!-- Interactive Diya Lighting Section -->
-        <div class="section-tag">Auspicious Blessings</div>
-        <h2 class="section-title">Light The Birthday Diyas 🪔</h2>
-        <p class="hint">Tap a Diya to light it and unlock a blessing!</p>
+        <!-- Interactive Vector Cake Section -->
+        <div class="cake-card">
+            <h2 class="section-title" style="margin-bottom: 5px;">Blow Out The Candles! 🎂</h2>
+            <p class="hint" style="margin-bottom: 25px;">Click/tap the flames to blow them out or hit the button below!</p>
 
-        <div class="diya-grid">
-            <div class="diya-card" onclick="lightDiya(event, this)">
-                <span class="diya-icon">🪔</span>
-                <div class="diya-title">Joy & Happiness</div>
-                <p class="hint diya-hint">Tap to light 💫</p>
-                <p class="diya-text">May your path always be illuminated with endless smiles, peace, and vibrant joy every single day.</p>
+            <div class="cake-svg-container" onclick="blowCandles()">
+                <!-- Vector SVG Birthday Cake -->
+                <svg viewBox="0 0 200 220" width="100%">
+                    <!-- Cake Stand -->
+                    <ellipse cx="100" cy="200" rx="90" ry="12" fill="#e2e8f0"/>
+                    <path d="M 80 200 L 70 215 L 130 215 L 120 200 Z" fill="#cbd5e1"/>
+                    
+                    <!-- Bottom Layer -->
+                    <rect x="30" y="130" width="140" height="65" rx="10" fill="#ff758f"/>
+                    <path d="M 30 145 Q 45 160 60 145 Q 75 160 90 145 Q 105 160 120 145 Q 135 160 150 145 Q 165 160 170 145 L 170 130 L 30 130 Z" fill="#ffffff"/>
+                    
+                    <!-- Top Layer -->
+                    <rect x="50" y="80" width="100" height="55" rx="8" fill="#ffb703"/>
+                    <path d="M 50 95 Q 62 108 75 95 Q 87 108 100 95 Q 112 108 125 95 Q 137 108 150 95 L 150 80 L 50 80 Z" fill="#ffffff"/>
+
+                    <!-- Candles -->
+                    <rect x="65" y="50" width="8" height="30" rx="3" fill="#06d6a0"/>
+                    <rect x="96" y="45" width="8" height="35" rx="3" fill="#7209b7"/>
+                    <rect x="127" y="50" width="8" height="30" rx="3" fill="#ff477e"/>
+
+                    <!-- Candle Flames -->
+                    <path class="flame" d="M 69 36 C 65 42, 73 42, 69 50 C 65 42, 73 42, 69 36 Z" fill="#ffbe0b"/>
+                    <path class="flame" d="M 100 31 C 96 37, 104 37, 100 45 C 96 37, 104 37, 100 31 Z" fill="#ffbe0b"/>
+                    <path class="flame" d="M 131 36 C 127 42, 135 42, 131 50 C 127 42, 135 42, 131 36 Z" fill="#ffbe0b"/>
+                </svg>
             </div>
-            <div class="diya-card" onclick="lightDiya(event, this)">
-                <span class="diya-icon">🪔</span>
-                <div class="diya-title">Love & Harmony</div>
-                <p class="hint diya-hint">Tap to light 💫</p>
-                <p class="diya-text">Thank you for filling our home with warmth, love, and unconditional care. You are my greatest blessing.</p>
+
+            <button class="btn" style="margin-top: 20px;" onclick="blowCandles()">Make A Wish & Blow Candles 🎉</button>
+        </div>
+
+        <!-- Interactive Vector Gift Box Section -->
+        <div class="gift-section">
+            <h2 class="section-title">A Unboxing Surprise For You 🎁</h2>
+            <p class="hint">Tap the gift box to unwrap your special birthday letter!</p>
+
+            <div class="gift-box-svg" onclick="openGift()">
+                <svg viewBox="0 0 100 100" width="100%">
+                    <!-- Box Body -->
+                    <rect x="15" y="40" width="70" height="50" rx="8" fill="#7209b7"/>
+                    <rect x="43" y="40" width="14" height="50" fill="#ffb703"/>
+                    
+                    <!-- Box Lid -->
+                    <rect x="10" y="28" width="80" height="16" rx="4" fill="#9d4edd"/>
+                    <rect x="43" y="28" width="14" height="16" fill="#ffb703"/>
+
+                    <!-- Ribbon Bow -->
+                    <path d="M 35 20 C 25 10, 45 10, 45 28 C 45 10, 65 10, 55 20 Z" fill="#ffb703"/>
+                </svg>
             </div>
-            <div class="diya-card" onclick="lightDiya(event, this)">
-                <span class="diya-icon">🪔</span>
-                <div class="diya-title">Health & Prosperity</div>
-                <p class="hint diya-hint">Tap to light 💫</p>
-                <p class="diya-text">Wishing you a year filled with good health, fulfillment of all your dreams, and boundless success.</p>
+
+            <!-- Revealed Birthday Letter -->
+            <div class="letter-popup" id="letterPopup">
+                <h3 style="font-family: 'Fredoka', sans-serif; color: var(--primary-pink); font-size: 1.8rem; margin-bottom: 12px;">My Dearest Wife,</h3>
+                <p style="line-height: 1.8; color: #444; font-size: 1.05rem;">
+                    Thank you for bringing endless joy, warmth, and brightness into my life every single day. You are my best friend, my partner, and my favorite adventure. Wishing you a year filled with laughter, big achievements, and all the happiness in the world! ❤️
+                </p>
             </div>
         </div>
 
-        <!-- Photo Gallery -->
-        <div class="section-tag">Precious Memory Wall</div>
-        <h2 class="section-title">Our Sacred Moments 📸</h2>
-        
-        <div class="gallery-grid">
-            <div class="photo-frame">
-                <!-- Replace with direct photo URLs -->
-                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600" alt="Memory 1">
-                <caption>Together Forever</caption>
-            </div>
-            <div class="photo-frame">
-                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600" alt="Memory 2">
-                <caption>Your Radiant Smile</caption>
-            </div>
-            <div class="photo-frame">
-                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=600" alt="Memory 3">
-                <caption>Our Beautiful Journey</caption>
-            </div>
-        </div>
+        <!-- Photo Gallery Wall -->
+        <div style="margin: 80px 0;">
+            <div class="badge-tag">Sweet Memories</div>
+            <h2 class="section-title">Our Favorite Moments 📸</h2>
 
-        <!-- Sacred Promises Section -->
-        <div class="section-tag">Vows & Commitments</div>
-        <h2 class="section-title">My Vows To You 💌</h2>
-        <p class="hint">Click each card to reveal my commitment</p>
-
-        <div class="promises-grid">
-            <div class="promise-card-container" onclick="flipCard(this)">
-                <div class="promise-card">
-                    <div class="card-front">
-                        <h3>Sacred Vow #1 ✦</h3>
-                        <p class="hint">Click to flip</p>
-                    </div>
-                    <div class="card-back">
-                        <p>"To always support your dreams, stand beside you in every challenge, and protect your happiness forever."</p>
-                    </div>
+            <div class="gallery-grid">
+                <div class="polaroid-frame">
+                    <!-- Replace src with your photos -->
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600" alt="Memory">
+                    <caption>Forever & Always</caption>
                 </div>
-            </div>
-            <div class="promise-card-container" onclick="flipCard(this)">
-                <div class="promise-card">
-                    <div class="card-front">
-                        <h3>Sacred Vow #2 ✦</h3>
-                        <p class="hint">Click to flip</p>
-                    </div>
-                    <div class="card-back">
-                        <p>"To listen with patience, care for you unconditionally, and respect you as my equal partner in life."</p>
-                    </div>
+                <div class="polaroid-frame">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600" alt="Memory">
+                    <caption>My Favorite Smile</caption>
                 </div>
-            </div>
-            <div class="promise-card-container" onclick="flipCard(this)">
-                <div class="promise-card">
-                    <div class="card-front">
-                        <h3>Sacred Vow #3 ✦</h3>
-                        <p class="hint">Click to flip</p>
-                    </div>
-                    <div class="card-back">
-                        <p>"To bring warmth, laughter, and lifelong devotion into our home each and every day."</p>
-                    </div>
+                <div class="polaroid-frame">
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=600" alt="Memory">
+                    <caption>Endless Magic</caption>
                 </div>
             </div>
         </div>
 
-        <!-- Wishing Thali Orb Section -->
-        <div class="thali-section">
-            <div class="section-tag">Celebration Finale</div>
-            <h2 class="section-title" style="margin-bottom: 10px;">The Birthday Wishing Thali 🪔</h2>
-            <p class="hint">Press and hold the Aarti orb below to launch your birthday celebration!</p>
+        <!-- Interactive Promises Badges -->
+        <div>
+            <div class="badge-tag">From My Heart</div>
+            <h2 class="section-title">My Promises To You 💌</h2>
+            <p class="hint">Tap a card to flip and reveal!</p>
 
-            <div class="thali-orb" onmousedown="holdThali()" onmouseup="releaseThali()" ontouchstart="holdThali()" ontouchend="releaseThali()">
-                ✨
+            <div class="promises-grid">
+                <div class="promise-card-container" onclick="flipCard(this)">
+                    <div class="promise-card">
+                        <div class="card-front">
+                            <span style="font-size: 2.5rem;">💖</span>
+                            <h3>Promise #1</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>"To always listen, hold your hand through life's highs and lows, and be your constant support."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="promise-card-container" onclick="flipCard(this)">
+                    <div class="promise-card">
+                        <div class="card-front">
+                            <span style="font-size: 2.5rem;">🌟</span>
+                            <h3>Promise #2</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>"To support every single dream you hold and celebrate your achievements every step of the way."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="promise-card-container" onclick="flipCard(this)">
+                    <div class="promise-card">
+                        <div class="card-front">
+                            <span style="font-size: 2.5rem;">✨</span>
+                            <h3>Promise #3</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>"To fill our home with warmth, laughter, and endless devotion each and every day."</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -541,6 +568,7 @@
                 document.getElementById('lock-screen').classList.add('hidden');
                 toggleMusic();
                 triggerConfetti();
+                generateBalloons();
             } else {
                 errorMsg.style.display = 'block';
             }
@@ -551,122 +579,74 @@
             if (isPlaying) {
                 bgMusic.pause();
                 document.getElementById('music-icon').innerText = '🎵';
-                document.getElementById('music-text').innerText = 'Play Track';
+                document.getElementById('music-text').innerText = 'Play Song';
                 isPlaying = false;
             } else {
                 bgMusic.play().then(() => {
                     document.getElementById('music-icon').innerText = '🎶';
-                    document.getElementById('music-text').innerText = 'Pause Track';
+                    document.getElementById('music-text').innerText = 'Pause Song';
                     isPlaying = true;
                 }).catch(() => console.log('Audio playback blocked'));
             }
         }
 
-        // Light Diya Function
-        function lightDiya(e, card) {
-            e.stopPropagation();
-            card.classList.toggle('lit');
+        // Blow out Cake Candles
+        function blowCandles() {
+            const flames = document.querySelectorAll('.flame');
+            flames.forEach(f => f.classList.add('off'));
             triggerConfetti();
         }
 
-        // Promise Card Flip
+        // Open Gift Box
+        function openGift() {
+            const popup = document.getElementById('letterPopup');
+            popup.style.display = 'block';
+            triggerConfetti();
+        }
+
+        // Flip Cards
         function flipCard(container) {
             const card = container.querySelector('.promise-card');
             card.classList.toggle('flipped');
         }
 
-        // Hold Thali Action
-        let holdTimer;
-        function holdThali() {
-            holdTimer = setTimeout(() => {
-                triggerConfetti();
-                alert("✨ May your life be blessed with joy, prosperity, and eternal love! Happy Birthday, My Queen! ❤️");
-            }, 1200);
-        }
-
-        function releaseThali() {
-            clearTimeout(holdTimer);
-        }
-
-        // Golden Confetti Burst
+        // Confetti Fireworks Burst
         function triggerConfetti() {
             confetti({
                 particleCount: 110,
-                spread: 90,
+                spread: 80,
                 origin: { y: 0.6 },
-                colors: ['#f39c12', '#f1c40f', '#e74c3c', '#ffffff']
+                colors: ['#ff477e', '#7209b7', '#ffb703', '#06d6a0']
             });
         }
 
-        // Sparkle Trail Effect
-        function spawnSparkle(e) {
-            const spark = document.createElement('div');
-            spark.innerHTML = '✨';
-            spark.style.position = 'fixed';
-            spark.style.left = e.clientX + 'px';
-            spark.style.top = e.clientY + 'px';
-            spark.style.fontSize = '18px';
-            spark.style.pointerEvents = 'none';
-            spark.style.zIndex = '9999';
-            spark.style.transition = 'transform 1s ease, opacity 1s ease';
-            spark.style.transform = 'translate(-50%, -50%) scale(1)';
-            spark.style.opacity = '1';
+        // Floating Balloons Generator
+        function generateBalloons() {
+            const container = document.getElementById('balloonContainer');
+            const colors = ['#ff477e', '#7209b7', '#ffb703', '#06d6a0', '#4cc9f0'];
 
-            document.body.appendChild(spark);
-
-            setTimeout(() => {
-                spark.style.transform = `translate(-50%, -80px) scale(1.4)`;
-                spark.style.opacity = '0';
-            }, 50);
-
-            setTimeout(() => spark.remove(), 1000);
+            for (let i = 0; i < 15; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'floating-balloon';
+                
+                const size = Math.random() * 30 + 40;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                balloon.innerHTML = `
+                    <svg width="${size}" height="${size * 1.3}" viewBox="0 0 50 65">
+                        <path d="M 25 0 C 40 0, 50 15, 50 30 C 50 45, 30 55, 25 55 C 20 55, 0 45, 0 30 C 0 15, 10 0, 25 0 Z" fill="${color}"/>
+                        <polygon points="22,55 28,55 25,60" fill="${color}"/>
+                        <path d="M 25 60 Q 20 63 25 65" stroke="#888" stroke-width="1.5" fill="none"/>
+                    </svg>
+                `;
+                
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.animationDuration = (Math.random() * 6 + 8) + 's';
+                balloon.style.animationDelay = (Math.random() * 5) + 's';
+                
+                container.appendChild(balloon);
+            }
         }
-
-        // THREE.JS Golden Ambient Particles
-        const canvas = document.getElementById('webgl-canvas');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-
-        const geometry = new THREE.BufferGeometry();
-        const count = 2200;
-        const positions = new Float32Array(count * 3);
-
-        for (let i = 0; i < count * 3; i++) {
-            positions[i] = (Math.random() - 0.5) * 15;
-        }
-
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-        const material = new THREE.PointsMaterial({
-            color: 0xf39c12,
-            size: 0.035,
-            transparent: true,
-            opacity: 0.65,
-            blending: THREE.AdditiveBlending
-        });
-
-        const particles = new THREE.Points(geometry, material);
-        scene.add(particles);
-
-        camera.position.z = 5;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            particles.rotation.y += 0.0015;
-            particles.rotation.x += 0.0008;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
     </script>
 </body>
 </html>
